@@ -8,6 +8,7 @@ import (
 var testFiles = []string{
 	"test1.txt",
 	"test2.txt",
+	"test3.txt",
 }
 
 func TestGetTrebuchetCalibrationValues(t *testing.T) {
