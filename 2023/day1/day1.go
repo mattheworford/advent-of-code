@@ -25,12 +25,12 @@ func GetTrebuchetCalibrationValues(documentName string) int {
 	sum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		sum += parse(line)
+		sum += parseLine(line)
 	}
 	return sum
 }
 
-func parse(line string) int {
+func parseLine(line string) int {
 	var digits []int
 	currString := ""
 	for _, char := range line {
