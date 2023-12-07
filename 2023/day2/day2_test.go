@@ -14,7 +14,7 @@ func TestValidateGameRecords(t *testing.T) {
 		return
 	}
 	for _, testFile := range testFiles {
-		actual := ValidateGameRecords("test_data/" + testFile.Name())
+		actual := GetValidGameRecords("test_data/" + testFile.Name())
 		t.Logf(strconv.Itoa(actual))
 	}
 }

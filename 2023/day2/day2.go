@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func ValidateGameRecords(documentName string) int {
+func GetValidGameRecords(documentName string) int {
 	file, _ := os.Open(documentName)
 	scanner := bufio.NewScanner(file)
 	sum := 0
