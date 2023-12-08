@@ -16,18 +16,21 @@ func GetWinningVariations(documentName string) int {
 	records := atoi(strings.Fields(strings.Split(scanner.Text(), ": ")[1]))
 	product := 1
 	for i, time := range times {
-		numWinningVariations := 0
-		for j := 1; j < time; j++ {
-			distance := getDistance(j, time)
-			if distance > records[i] {
-				numWinningVariations += 1
-			}
-		}
-		product *= numWinningVariations
+		product *= getNumWinningVariations(time, records[i])
 	}
 	return product
 }
 
+func getNumWinningVariations(time, record int) (res int) {
+	for i := 1; i < time; i++ {
+		distance := getDistance(i, time)
+		if distance > record {
+			res = time - 1 - ((i - 1) * 2)
+			break
+		}
+	}
+	return
+}
 func getDistance(holdingTime, totalTime int) int {
 	remainingTime := totalTime - holdingTime
 	return remainingTime * holdingTime
