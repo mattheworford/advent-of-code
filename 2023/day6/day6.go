@@ -7,7 +7,19 @@ import (
 	"strings"
 )
 
-func GetWinningVariations(documentName string) int {
+func GetWinningVariationsFromSingleTime(documentName string) int {
+	file, _ := os.Open(documentName)
+	scanner := bufio.NewScanner(file)
+	scanner.Scan()
+	splitTime := strings.Fields(strings.Split(scanner.Text(), ": ")[1])
+	time, _ := strconv.Atoi(strings.Join(splitTime, ""))
+	scanner.Scan()
+	splitRecord := strings.Fields(strings.Split(scanner.Text(), ": ")[1])
+	record, _ := strconv.Atoi(strings.Join(splitRecord, ""))
+	return getNumWinningVariations(time, record)
+}
+
+func GetWinningVariationsFromMultipleTimes(documentName string) int {
 	file, _ := os.Open(documentName)
 	scanner := bufio.NewScanner(file)
 	scanner.Scan()

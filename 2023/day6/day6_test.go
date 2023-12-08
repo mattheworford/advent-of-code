@@ -7,14 +7,26 @@ import (
 	"testing"
 )
 
-func TestGetLowestLocationOfSeeds(t *testing.T) {
+func TestGetWinningVariationsFromSingleTime(t *testing.T) {
 	testFiles, err := os.ReadDir("test_data")
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
 	for _, testFile := range testFiles {
-		actual := GetWinningVariations("test_data/" + testFile.Name())
+		actual := GetWinningVariationsFromSingleTime("test_data/" + testFile.Name())
+		t.Logf(strconv.Itoa(actual))
+	}
+}
+
+func TestGetWinningVariationsFromMultipleTimes(t *testing.T) {
+	testFiles, err := os.ReadDir("test_data")
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	for _, testFile := range testFiles {
+		actual := GetWinningVariationsFromMultipleTimes("test_data/" + testFile.Name())
 		t.Logf(strconv.Itoa(actual))
 	}
 }
