@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func GetTotalScratchcards(documentName string) int {
+func GetTotalScratchcardCount(documentName string) int {
 	file, _ := os.Open(documentName)
 	scanner := bufio.NewScanner(file)
 	cardNumber := 1
