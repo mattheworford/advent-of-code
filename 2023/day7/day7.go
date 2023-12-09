@@ -2,6 +2,7 @@ package day7
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"sort"
 	"strconv"
@@ -12,7 +13,7 @@ var cardStrengths = map[string]int{
 	"A": 14,
 	"K": 13,
 	"Q": 12,
-	"J": 11,
+	"J": 0,
 	"T": 10,
 }
 
@@ -24,8 +25,18 @@ func GetTotalWinnings(documentName string) (totalWinnings int) {
 		hands = append(hands, parseHand(scanner.Text()))
 	}
 	sort.Sort(ByScore(hands))
+	fmt.Println(filter(hands))
 	for i, hand := range hands {
 		totalWinnings += (i + 1) * hand.bid
+	}
+	return
+}
+
+func filter(ss []Hand) (ret []Hand) {
+	for _, s := range ss {
+		if strings.Contains(s.hand, "J") {
+			ret = append(ret, s)
+		}
 	}
 	return
 }
@@ -59,19 +70,33 @@ func getScore(hand string) int {
 }
 
 func hasFiveOfAKind(hand string) bool {
+	cardMap := map[int32]int{'J': 0}
 	for _, card := range hand {
-		if string(card) != string(hand[0]) {
-			return false
+		cardMap = initOrAdd(cardMap, card, 1)
+		if card == 'J' {
+			for key, num := range cardMap {
+				if key != 'J' && num+cardMap['J'] == 5 {
+					return true
+				}
+			}
+		} else if cardMap[card]+cardMap['J'] == 5 {
+			return true
 		}
 	}
-	return true
+	return cardMap['J'] == 5
 }
 
 func hasFourOfAKind(hand string) bool {
-	cardMap := map[int32]int{}
+	cardMap := map[int32]int{'J': 0}
 	for _, card := range hand {
 		cardMap = initOrAdd(cardMap, card, 1)
-		if cardMap[card] == 4 {
+		if card == 'J' {
+			for key, num := range cardMap {
+				if key != 'J' && num+cardMap['J'] >= 4 {
+					return true
+				}
+			}
+		} else if cardMap[card]+cardMap['J'] >= 4 {
 			return true
 		}
 	}
@@ -79,21 +104,33 @@ func hasFourOfAKind(hand string) bool {
 }
 
 func hasFullHouse(hand string) bool {
-	cardMap := map[int32]int{}
+	cardMap := map[int32]int{'J': 0}
 	for _, card := range hand {
 		cardMap = initOrAdd(cardMap, card, 1)
-		if cardMap[card] > 3 {
+		if card == 'J' {
+			for key, num := range cardMap {
+				if key != 'J' && num+cardMap['J'] > 3 {
+					return false
+				}
+			}
+		} else if cardMap[card]+cardMap['J'] > 3 {
 			return false
 		}
 	}
-	return len(cardMap) == 2
+	return len(cardMap) == 3
 }
 
 func hasThreeOfAKind(hand string) bool {
-	cardMap := map[int32]int{}
+	cardMap := map[int32]int{'J': 0}
 	for _, card := range hand {
 		cardMap = initOrAdd(cardMap, card, 1)
-		if cardMap[card] == 3 {
+		if card == 'J' {
+			for key, num := range cardMap {
+				if key != 'J' && num+cardMap['J'] >= 3 {
+					return true
+				}
+			}
+		} else if cardMap[card]+cardMap['J'] >= 3 {
 			return true
 		}
 	}
@@ -101,11 +138,16 @@ func hasThreeOfAKind(hand string) bool {
 }
 
 func hasTwoPair(hand string) bool {
-	cardMap := map[int32]int{}
+	cardMap := map[int32]int{'J': 0}
 	numPairs := 0
 	for _, card := range hand {
 		cardMap = initOrAdd(cardMap, card, 1)
-		if cardMap[card]%2 == 0 {
+		if card == 'J' {
+			numPairs += 1
+			if numPairs == 2 {
+				return true
+			}
+		} else if cardMap[card]%2 == 0 {
 			numPairs += 1
 			if numPairs == 2 {
 				return true
@@ -116,10 +158,16 @@ func hasTwoPair(hand string) bool {
 }
 
 func hasPair(hand string) bool {
-	cardMap := map[int32]int{}
+	cardMap := map[int32]int{'J': 0}
 	for _, card := range hand {
 		cardMap = initOrAdd(cardMap, card, 1)
-		if cardMap[card] == 2 {
+		if card == 'J' {
+			for key, num := range cardMap {
+				if key != 'J' && num+cardMap['J'] == 2 {
+					return true
+				}
+			}
+		} else if cardMap[card]+cardMap['J'] == 2 {
 			return true
 		}
 	}
