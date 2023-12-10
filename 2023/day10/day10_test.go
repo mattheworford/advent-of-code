@@ -18,3 +18,15 @@ func TestGetStepsToFarthestPointInLoop(t *testing.T) {
 		t.Logf(strconv.Itoa(actual))
 	}
 }
+
+func TestGetEnclosedTiles(t *testing.T) {
+	testFiles, err := os.ReadDir("test_data")
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	for _, testFile := range testFiles {
+		actual := GetEnclosedTiles("test_data/" + testFile.Name())
+		t.Logf(strconv.Itoa(actual))
+	}
+}
