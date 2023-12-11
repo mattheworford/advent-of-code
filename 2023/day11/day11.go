@@ -7,12 +7,12 @@ import (
 	"slices"
 )
 
-func GetSumOfGalaxyDistances(documentName string) int {
+func GetSumOfGalaxyDistances(documentName string, expansionSize int) int {
 	file, _ := os.Open(documentName)
 	scanner := bufio.NewScanner(file)
 	space := getSpace(scanner)
 	galaxies, expandedCols, expandedRows := getGalaxies(space), getExpandedCols(space), getExpandedRows(space)
-	distances := getDistances(galaxies, expandedCols, expandedRows)
+	distances := getDistances(galaxies, expandedCols, expandedRows, expansionSize)
 	return sum(distances)
 }
 
@@ -82,13 +82,13 @@ func getGalaxies(space []string) (galaxies []Galaxy) {
 	return
 }
 
-func getDistances(galaxies []Galaxy, expandedCols, expandedRows []int) (distances []int) {
+func getDistances(galaxies []Galaxy, expandedCols, expandedRows []int, expansionSize int) (distances []int) {
 	for curr, first := range galaxies {
 		for _, second := range galaxies[curr+1:] {
 			maxX, minX := int(math.Max(float64(first.x), float64(second.x))), int(math.Min(float64(first.x), float64(second.x)))
 			maxY, minY := int(math.Max(float64(first.y), float64(second.y))), int(math.Min(float64(first.y), float64(second.y)))
-			xDistance := maxX - minX + len(filter(expandedRows, minX, maxX))
-			yDistance := maxY - minY + len(filter(expandedCols, minY, maxY))
+			xDistance := maxX - minX + (len(filter(expandedRows, minX, maxX)) * (expansionSize - 1))
+			yDistance := maxY - minY + (len(filter(expandedCols, minY, maxY)) * (expansionSize - 1))
 			distance := xDistance + yDistance
 			distances = append(distances, distance)
 		}
