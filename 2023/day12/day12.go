@@ -12,7 +12,7 @@ func GetTotalSpringArrangements(documentName string) (sum int) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		record, groupSizes := getRecordAndGroupSizes(scanner.Text())
-		sum += getNumArrangements(record, groupSizes)
+		sum += getNumArrangements("", record, groupSizes, 0, false)
 	}
 	return
 }
@@ -26,11 +26,7 @@ func getRecordAndGroupSizes(line string) (record string, groupSizes []int) {
 	return
 }
 
-func getNumArrangements(record string, groupSizes []int) int {
-	return getNumArrangementsHelper("", record, groupSizes, 0, false)
-}
-
-func getNumArrangementsHelper(arrangement string, record string, groupSizes []int, currGroup int, inGroup bool) (sum int) {
+func getNumArrangements(arrangement string, record string, groupSizes []int, currGroup int, inGroup bool) (sum int) {
 	if len(record) == 0 {
 		if currGroup == len(groupSizes) {
 			return 1
@@ -44,13 +40,13 @@ func getNumArrangementsHelper(arrangement string, record string, groupSizes []in
 	}
 	if !(currGroup == len(groupSizes)) && (record[0] == '?' || record[0] == '#') && (last == "." || last == "" || (last == "#" && inGroup)) {
 		if groupIsComplete(arrangement+"#", groupSizes[currGroup]) {
-			sum += getNumArrangementsHelper(arrangement+"#", record[1:], groupSizes, currGroup+1, false)
+			sum += getNumArrangements(arrangement+"#", record[1:], groupSizes, currGroup+1, false)
 		} else {
-			sum += getNumArrangementsHelper(arrangement+"#", record[1:], groupSizes, currGroup, true)
+			sum += getNumArrangements(arrangement+"#", record[1:], groupSizes, currGroup, true)
 		}
 	}
 	if !inGroup && (record[0] == '?' || record[0] == '.') {
-		sum += getNumArrangementsHelper(arrangement+".", record[1:], groupSizes, currGroup, false)
+		sum += getNumArrangements(arrangement+".", record[1:], groupSizes, currGroup, false)
 	}
 	return
 }
