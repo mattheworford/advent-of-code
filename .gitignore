@@ -1,2 +1,49 @@
 .idea
 *.mod
+*.txt
+.DS_Store
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+2024/.idea/modules.xml
+2024/.idea/jarRepositories.xml
+2024/.idea/compiler.xml
+2024/.idea/libraries/
+2024/*.iws
+2024/*.iml
+2024/*.ipr
+2024/out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Kotlin ###
+2024/.kotlin
+
+### Eclipse ###
+2024/.apt_generated
+2024/.classpath
+2024/.factorypath
+2024/.project
+2024/.settings
+2024/.springBeans
+2024/.sts4-cache
+2024/bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+2024/nbproject/private/
+2024/nbbuild/
+2024/dist/
+2024/nbdist/
+2024/.nb-gradle/
+
+### VS Code ###
+2024/.vscode/
+
+### Mac OS ###
+2024/.DS_Store
