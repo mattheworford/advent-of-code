@@ -6,7 +6,6 @@ fun main() {
 
         return pattern.findAll(input.joinToString { it })
             .map { match ->
-                // Extract the two numbers from the capture groups
                 val (num1, num2) = match.destructured
                 num1.toInt() * num2.toInt()
             }
@@ -14,12 +13,37 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return -1
+        val mulPattern = "mul\\((\\d{1,3}),(\\d{1,3})\\)".toRegex()
+        val doPattern = "do\\(\\)".toRegex()
+        val dontPattern = "don't\\(\\)".toRegex()
+
+        var enabled = true
+        var sum = 0
+
+        val allMatches = (mulPattern.findAll(input.joinToString { it }) +
+                doPattern.findAll(input.joinToString { it }) +
+                dontPattern.findAll(input.joinToString { it }))
+            .sortedBy { it.range.first }
+
+        for (match in allMatches) {
+            when (match.value) {
+                "do()" -> enabled = true
+                "don't()" -> enabled = false
+                else -> {
+                    if (enabled) {
+                        val (num1, num2) = match.destructured
+                        sum += num1.toInt() * num2.toInt()
+                    }
+                }
+            }
+        }
+        return sum
     }
 
-    val testInput = readInput("Day03_test")
-    check(part1(testInput) == 161)
-    check(part2(testInput) == -1)
+    val testInput1 = readInput("Day03_test_part1")
+    check(part1(testInput1) == 161)
+    val testInput2 = readInput("Day03_test_part2")
+    check(part2(testInput2) == 48)
 
     val input = readInput("Day03")
     part1(input).println()
